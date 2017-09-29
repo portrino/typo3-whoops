@@ -67,11 +67,14 @@ script:
     echo "Checking TYPO3 frontend output";
     curl -s localhost | grep "Whoops! There was an error."
 
-after_script:
+after_failure:
+  - >
+    echo "Apache2 vHost configuration:";
+    sudo cat /etc/apache2/sites-available/typo3-whoops.local.conf;
+  - >
+    echo "Apache2 error log:";
+    sudo cat $TRAVIS_BUILD_DIR/apache-error.log;
   - >
     echo "cURL from localhost:";
     curl localhost;
-  - >
-    echo "Apache2 Error Log:";
-    sudo cat $TRAVIS_BUILD_DIR/apache-error.log;
   - sleep 5
