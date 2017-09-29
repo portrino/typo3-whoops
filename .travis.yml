@@ -37,8 +37,10 @@ before_install:
   - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
   # setup virtual host
-  - sudo cp -f .travis/apache/default /etc/apache2/sites-available/default
+  - sudo cp -f .travis/apache/typo3-whoops.local.conf /etc/apache2/sites-available/typo3-whoops.local.conf
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+  - sudo a2dissite 000-default.conf
+  - sudo a2ensite typo3-whoops.local.conf
   - sudo service apache2 restart
 
 install:
