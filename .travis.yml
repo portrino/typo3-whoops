@@ -44,7 +44,7 @@ before_install:
   - sudo a2ensite typo3-whoops.local.conf
   - mkdir -p .build/web
   - sudo service apache2 restart
-  - rm -fr .build/build
+  - rm -fr .build/web
 
 install:
   - travis_retry composer install $COMPOSER_FLAGS --no-interaction
@@ -53,7 +53,6 @@ before_script:
   - phpenv config-rm xdebug.ini
   - export TYPO3_PATH_WEB=$PWD/.build/web
   - mkdir -p .build/web/typo3conf
-  - echo "foo" > .build/web/index.html
   - cp -f .travis/typo3/AdditionalConfiguration.php .build/web/typo3conf/AdditionalConfiguration.php
   - cp -f .travis/typo3/LocalConfiguration.php .build/web/typo3conf/LocalConfiguration.php
   - chmod 755 . && chmod 755 .build/ && chmod 755 .build/web/
@@ -68,6 +67,11 @@ script:
     echo "Setup TYPO3 via console";
     ./.build/bin/typo3cms install:fixfolderstructure;
     ./.build/bin/typo3cms install:generatepackagestates;
+    find .build/web/ -type d | xargs chmod 755;
+    sudo service apache2 restart
+    ls -la
+    ls -la .build
+    ls -la .build/web
 
   - >
     echo "Checking TYPO3 frontend output";
