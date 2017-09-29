@@ -56,6 +56,8 @@ before_script:
   - echo "foo" > .build/web/index.html
   - cp -f .travis/typo3/AdditionalConfiguration.php .build/web/typo3conf/AdditionalConfiguration.php
   - cp -f .travis/typo3/LocalConfiguration.php .build/web/typo3conf/LocalConfiguration.php
+  - chmod 755 .
+  - find . -type d | xargs chmod 755
 
 script:
   - >
