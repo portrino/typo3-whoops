@@ -68,16 +68,15 @@ script:
     ./.build/bin/typo3cms install:fixfolderstructure;
     ./.build/bin/typo3cms install:generatepackagestates;
     find .build/web/ -type d | xargs chmod 755;
-    sudo service apache2 restart
-    ls -la
-    ls -la .build
-    ls -la .build/web
 
   - >
     echo "Checking TYPO3 frontend output";
     curl -s localhost | grep "Whoops! There was an error."
 
 after_failure:
+  - >
+    echo "Folder permissions:"
+    ls -laZ .build
   - >
     echo "Apache2 vHost configuration:";
     sudo cat /etc/apache2/sites-available/typo3-whoops.local.conf;
