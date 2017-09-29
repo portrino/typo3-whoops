@@ -70,3 +70,4 @@ after_failure:
   - curl localhost
   - echo "Apache2 Error Log:"
   - sudo cat $TRAVIS_BUILD_DIR/apache-error.log
+  - sleep 5
