@@ -1,0 +1,46 @@
+language: php
+
+php:
+  - 5.5
+  - 5.6
+  - 7.0
+  - 7.1
+
+env:
+  - COMPOSER_FLAGS="--prefer-dist --optimize-autoloader"
+  - TYPO3_VERSION="^7.6"
+
+matrix:
+  fast_finish: true
+
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - parallel
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+before_install:
+  - composer self-update
+  - composer --version
+
+install:
+  - travis_retry composer install "$COMPOSER_FLAGS" --no-interaction
+
+before_script:
+  - phpenv config-rm xdebug.ini
+  - composer require typo3/cms="$TYPO3_VERSION"
+  # Restore composer.json
+  - git checkout composer.json
+  - export TYPO3_PATH_WEB=$PWD/.build/web
+
+script:
+  - >
+    echo;
+    echo "Fixing PHP PSR-2 coding standard problems";
+    .Build/bin/php-cs-fixer fix
+

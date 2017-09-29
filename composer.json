@@ -1,0 +1,47 @@
+{
+    "name": "portrino/typo3-whoops",
+    "description": "Whoops error/ exception handler for TYPO3 projects",
+    "keywords": [
+        "TYPO3",
+        "Whoops",
+        "error",
+        "handling"
+    ],
+    "license": "GPL-2.0+",
+    "authors": [
+        {
+            "name": "Axel Böswetter",
+            "email": "boeswetter@portrino.de",
+            "homepage": "http://www.portrino.de",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "typo3/cms": "^7.6",
+        "filp/whoops": "^2.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.0",
+        "friendsofphp/php-cs-fixer": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Portrino\\Typo3Whoops\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Portrino\\Typo3Whoops\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "bin-dir": ".build/bin",
+        "vendor-dir": ".build/vendor"
+    },
+    "extra": {
+        "typo3/cms": {
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "web-dir": ".build/web"
+        }
+    }
+}

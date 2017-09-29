@@ -1,0 +1,5 @@
+/.idea/
+/.build/
+/composer.lock
+/.envrc
+/.php_cs.cache
