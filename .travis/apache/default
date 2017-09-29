@@ -1,5 +1,6 @@
 <VirtualHost *:80>
-    ServerName typo3-whoops.local
+    ServerName localhost
+    ServerAlias typo3-whoops.local
 
     DocumentRoot %TRAVIS_BUILD_DIR%/.build/web
     <Directory />
