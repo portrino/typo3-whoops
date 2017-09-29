@@ -31,6 +31,7 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
   # setup php-fpm
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.0" ]]; then sudo cp .travis/php/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
   - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
   - sudo a2enmod rewrite actions fastcgi alias
   - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
@@ -63,3 +64,6 @@ script:
   - >
     echo "Checking TYPO3 frontend output";
     curl -s typo3-whoops.local | grep "Whoops! There was an error." || exit 1
+
+after_failure:
+  - sudo cat $TRAVIS_BUILD_DIR/apache-error.log
