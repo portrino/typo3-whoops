@@ -1,4 +1,5 @@
-sudo: false
+sudo: required
+dist: trusty
 language: php
 php:
   #- 5.5
@@ -16,15 +17,28 @@ matrix:
 
 addons:
   hosts:
-    - travis.dev
+    - typo3-whoops.local
 
 cache:
   directories:
     - $HOME/.composer/cache
 
 before_install:
+  # setup mysql
   - mysql -e 'CREATE DATABASE typo3_whoops_test;'
   - mysql -u travis -D typo3_whoops_test < .travis/mysql/typo3_whoops_test.sql
+  # setup apache
+  - sudo apt-get update
+  - sudo apt-get install apache2 libapache2-mod-fastcgi
+  # setup php-fpm
+  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  - sudo a2enmod rewrite actions fastcgi alias
+  - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
+  # setup virtual host
+  - sudo cp -f .travis/apache/default /etc/apache2/sites-available/default
+  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+  - sudo service apache2 restart
 
 install:
   - travis_retry composer install $COMPOSER_FLAGS --no-interaction
@@ -33,8 +47,8 @@ before_script:
   - phpenv config-rm xdebug.ini
   - export TYPO3_PATH_WEB=$PWD/.build/web
   - mkdir -p .build/web/typo3conf
-  - cp .travis/typo3/AdditionalConfiguration.php .build/web/typo3conf/AdditionalConfiguration.php
-  - cp .travis/typo3/LocalConfiguration.php .build/web/typo3conf/LocalConfiguration.php
+  - cp -f .travis/typo3/AdditionalConfiguration.php .build/web/typo3conf/AdditionalConfiguration.php
+  - cp -f .travis/typo3/LocalConfiguration.php .build/web/typo3conf/LocalConfiguration.php
 
 script:
   - >
@@ -42,6 +56,10 @@ script:
     ./.build/bin/phpcs --standard=PSR2 src/ tests/
 
   - >
-    echo "Installing TYPO3 via console";
+    echo "Setup TYPO3 via console";
     ./.build/bin/typo3cms install:fixfolderstructure;
     ./.build/bin/typo3cms install:generatepackagestates;
+
+  - >
+    echo "Checking TYPO3 frontend output";
+    curl -s typo3-whoops.local | grep "Whoops! There was an error." || exit 1
