@@ -41,19 +41,9 @@ script:
   - >
     echo;
     echo "Running PHP PSR-2 coding standard checks";
-    .build/bin/phpcs --standard=PSR2 src/ tests/
+    ./.build/bin/phpcs --standard=PSR2 src/ tests/
 
   - >
     echo;
     echo "Installing TYPO3 via console";
-    ./.build/bin/typo3cms install:setup --non-interactive \
-                                        --database-user-name="travis" \
-                                        --database-user-password="" \
-                                        --database-host-name="127.0.0.1" \
-                                        --database-name="typo3_whoops_test" \
-                                        --use-existing-database \
-                                        --admin-user-name="portrino" \
-                                        --admin-password="portrino" \
-                                        --site-name="TYPO3 Whoops" \
-                                        --site-setup-type="no";
-
+    ./.build/bin/typo3cms install:setup --non-interactive  --database-user-name="travis"  --database-user-password=""  --database-host-name="127.0.0.1"  --database-name="typo3_whoops_test" --use-existing-database --admin-user-name="portrino" --admin-password="portrino" --site-name="TYPO3 Whoops" --site-setup-type="no";
