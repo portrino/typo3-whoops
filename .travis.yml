@@ -66,4 +66,7 @@ script:
     curl -s localhost | grep "Whoops! There was an error." || exit 1
 
 after_failure:
+  - echo "cURL from localhost:"
+  - curl localhost
+  - echo "Apache2 Error Log:"
   - sudo cat $TRAVIS_BUILD_DIR/apache-error.log
