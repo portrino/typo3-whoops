@@ -31,7 +31,8 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
   # setup php-fpm
-  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.0" ]]; then sudo cp .travis/php/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
+  - sudo cp .travis/php/typo3-whoops.local.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/;
+  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/typo3-whoops.local.conf
   - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
   - sudo a2enmod rewrite actions fastcgi alias
   - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
@@ -77,4 +78,4 @@ after_failure:
   - >
     echo "cURL from localhost:";
     curl localhost;
-  - sleep 5
+  - sleep 2
