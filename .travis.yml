@@ -28,7 +28,7 @@ before_install:
   - composer --version
 
 install:
-  - travis_retry composer install "$COMPOSER_FLAGS" --no-interaction
+  - travis_retry composer install $COMPOSER_FLAGS --no-interaction
 
 before_script:
   - phpenv config-rm xdebug.ini
