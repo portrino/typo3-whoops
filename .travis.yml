@@ -42,7 +42,9 @@ before_install:
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/typo3-whoops.local.conf
   - sudo a2dissite 000-default.conf
   - sudo a2ensite typo3-whoops.local.conf
+  - mkdir -p .build/web
   - sudo service apache2 restart
+  - rm -fr .build/build
 
 install:
   - travis_retry composer install $COMPOSER_FLAGS --no-interaction
@@ -51,6 +53,7 @@ before_script:
   - phpenv config-rm xdebug.ini
   - export TYPO3_PATH_WEB=$PWD/.build/web
   - mkdir -p .build/web/typo3conf
+  - echo "foo" > .build/web/index.html
   - cp -f .travis/typo3/AdditionalConfiguration.php .build/web/typo3conf/AdditionalConfiguration.php
   - cp -f .travis/typo3/LocalConfiguration.php .build/web/typo3conf/LocalConfiguration.php
 
