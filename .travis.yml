@@ -1,10 +1,12 @@
+sudo: false
 language: php
-
 php:
-  - 5.5
-  - 5.6
+  #- 5.5
+  #- 5.6
   - 7.0
-  - 7.1
+  #- 7.1
+services:
+  - mysql
 
 env:
   - COMPOSER_FLAGS="--prefer-dist --optimize-autoloader" TYPO3_VERSION="^7.6"
@@ -12,12 +14,12 @@ env:
 matrix:
   fast_finish: true
 
-sudo: false
-
 addons:
   apt:
     packages:
       - parallel
+  hosts:
+    - travis.dev
 
 cache:
   directories:
@@ -26,20 +28,32 @@ cache:
 before_install:
   - composer self-update
   - composer --version
+  - mysql -e 'CREATE DATABASE typo3_whoops_test;'
 
 install:
   - travis_retry composer install $COMPOSER_FLAGS --no-interaction
 
 before_script:
   - phpenv config-rm xdebug.ini
-  - composer require typo3/cms="$TYPO3_VERSION"
-  # Restore composer.json
-  - git checkout composer.json
   - export TYPO3_PATH_WEB=$PWD/.build/web
 
 script:
   - >
     echo;
-    echo "Fixing PHP PSR-2 coding standard problems";
-    .build/bin/php-cs-fixer fix
+    echo "Running PHP PSR-2 coding standard checks";
+    .build/bin/phpcs --standard=PSR2 src/ tests/
+
+  - >
+    echo;
+    echo "Installing TYPO3 via console";
+    ./.build/bin/typo3cms install:setup --non-interactive \
+                                        --database-user-name="travis" \
+                                        --database-user-password="" \
+                                        --database-host-name="127.0.0.1" \
+                                        --database-name="typo3_whoops_test" \
+                                        --use-existing-database \
+                                        --admin-user-name="portrino" \
+                                        --admin-password="portrino" \
+                                        --site-name="TYPO3 Whoops" \
+                                        --site-setup-type="no";
 

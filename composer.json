@@ -7,7 +7,7 @@
         "error",
         "handling"
     ],
-    "license": "GPL-2.0+",
+    "license": "MIT",
     "authors": [
         {
             "name": "Axel Böswetter",
@@ -17,12 +17,13 @@
         }
     ],
     "require": {
-        "typo3/cms": "^7.6",
+        "typo3/cms": "^7.6 || ^8.7",
         "filp/whoops": "^2.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.0",
-        "friendsofphp/php-cs-fixer": "^2.0"
+        "friendsofphp/php-cs-fixer": "^2.0",
+        "helhum/typo3-console": "^4.9",
+        "typo3/cms": "^7.6"
     },
     "autoload": {
         "psr-4": {
@@ -39,6 +40,10 @@
         "vendor-dir": ".build/vendor"
     },
     "extra": {
+        "helhum/typo3-console": {
+            "install-binary": false,
+            "install-extension-dummy": false
+        },
         "typo3/cms": {
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
             "web-dir": ".build/web"
