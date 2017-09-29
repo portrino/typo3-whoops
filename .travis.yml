@@ -42,5 +42,5 @@ script:
   - >
     echo;
     echo "Fixing PHP PSR-2 coding standard problems";
-    .Build/bin/php-cs-fixer fix
+    .build/bin/php-cs-fixer fix
 
