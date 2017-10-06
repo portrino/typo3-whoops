@@ -87,3 +87,6 @@ after_failure:
     echo "cURL from localhost:";
     curl localhost;
   - sleep 2
+
+notifications:
+  email: false
