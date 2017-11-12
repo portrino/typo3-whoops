@@ -48,8 +48,8 @@ script:
     .build/bin/phpcs --standard=PSR2 src/ tests/;
 
   - >
-    echo "Checking TYPO3 frontend output";
-    curl -s localhost | grep "Whoops! There was an error."
+    echo;
+    curl -vsf 'http://127.0.0.1:8080/typo3/index.php' &> /dev/stdout
 
 notifications:
   email: false
