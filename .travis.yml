@@ -42,7 +42,7 @@ before_script:
 script:
   - >
     echo "Running PHP PSR-2 coding standard checks";
-    .build/bin/phpcs --standard=PSR2 src/ tests/;
+    .build/bin/phpcs --standard=PSR2 --warning-severity=0 src/ tests/;
 
   - >
     echo;
