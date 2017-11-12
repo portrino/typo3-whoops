@@ -49,7 +49,7 @@ script:
 
   - >
     echo "Run php in-built server - background process"
-    nohup bash -c "php -S localhost:8080 2>&1 -t .build/web &" && sleep 1; cat nohup.out
+    nohup bash -c "php -S 127.0.0.1:8080 2>&1 -t .build/web &" && sleep 1; cat nohup.out
 
   - >
     echo;
