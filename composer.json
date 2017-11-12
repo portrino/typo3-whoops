@@ -17,13 +17,11 @@
         }
     ],
     "require": {
-        "typo3/cms": "^7.6 || ^8.7",
+        "typo3/cms": "^7.6",
 
         "filp/whoops": "~2.1.0"
     },
     "require-dev": {
-        "typo3/cms": "^7.6",
-
         "friendsofphp/php-cs-fixer": "~2.2.8",
         "helhum/typo3-console": "~4.9.0",
         "squizlabs/php_codesniffer": "~3.1.0"
