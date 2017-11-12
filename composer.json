@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "typo3/cms": "^7.6 || ^8.7",
+        "typo3/cms": "^7.6",
 
         "filp/whoops": "~2.1.0"
     },
