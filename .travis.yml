@@ -28,7 +28,7 @@ before_install:
   - composer self-update
 
 install:
-  - travis_retry composer install $COMPOSER_FLAGS --no-interaction
+  - composer install
 
 before_script:
   - export TYPO3_PATH_WEB=$PWD/.build/web
