@@ -6,9 +6,6 @@ php:
   - 7.0
   #- 7.1
 
-env:
-  - COMPOSER_FLAGS="--prefer-dist --optimize-autoloader" TYPO3_VERSION="^7.6"
-
 matrix:
   fast_finish: true
 
@@ -39,18 +36,17 @@ before_script:
   - .build/bin/typo3cms cache:flushgroups system
   - .build/bin/typo3cms configuration:set --path SYS/trustedHostsPattern --value ".*"
 
+  - echo "Run php in-built server - background process"
+  - nohup bash -c "php -S localhost:8000 2>&1 -t .build/web/ &" && sleep 1; cat nohup.out
+
 script:
   - >
     echo "Running PHP PSR-2 coding standard checks";
     .build/bin/phpcs --standard=PSR2 src/ tests/;
 
   - >
-    echo "Run php in-built server - background process"
-    nohup bash -c "php -S 127.0.0.1:8080 2>&1 -t .build/web &" && sleep 1; cat nohup.out
-
-  - >
     echo;
-    curl -vsf 'http://127.0.0.1:8080/typo3/index.php' &> /dev/stdout
+    curl -vsf 'http://127.0.0.1:8000/typo3/index.php' &> /dev/stdout
 
 notifications:
   email: false
