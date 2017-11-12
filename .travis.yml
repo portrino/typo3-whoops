@@ -46,7 +46,5 @@ script:
 
   - >
     echo;
-    curl -vsf 'http://127.0.0.1:8000/typo3/index.php' &> /dev/stdout
-
-notifications:
-  email: false
+    echo "Running tests";
+    .build/bin/codecept run -c tests/codeception.yml --debug
