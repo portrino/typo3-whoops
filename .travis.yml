@@ -38,10 +38,13 @@ before_script:
   - export TYPO3_PATH_WEB=$PWD/.build/web
   - mkdir -p .build/web/typo3conf
   - .build/bin/typo3cms install:setup --non-interactive --database-host-name=127.0.0.1 --database-port=3306 --database-user-name=travis --database-name=typo3 --use-existing-database --admin-user-name=travis --admin-password=travis123456! --site-setup-type=site
+  - .build/bin/typo3cms install:setup --non-interactive --database-host-name=127.0.0.1 --database-port=3306 --database-user-name=portrino --database-user-name=root --database-name=typo3 --use-existing-database --admin-user-name=travis --admin-password=travis123456! --site-setup-type=site
   - .build/bin/typo3cms install:generatepackagestates
   - .build/bin/typo3cms database:updateschema *.add,*.change
   - .build/bin/typo3cms cache:flushgroups system
   - .build/bin/typo3cms configuration:set --path SYS/trustedHostsPattern --value ".*"
+  - .build/bin/typo3cms configuration:set --path SYS/debugExceptionHandler --value "Portrino\\Typo3Whoops\\Error\\WhoopsExceptionHandler"
+  - .build/bin/typo3cms configuration:set --path SYS/productionExceptionHandler --value "Portrino\\Typo3Whoops\\Error\\WhoopsExceptionHandler"
 
   - echo "Run php in-built server - background process"
   - nohup bash -c "php -S localhost:8000 2>&1 -t .build/web/ &" && sleep 1; cat nohup.out

@@ -1,4 +1,5 @@
 <?php
+
 namespace Portrino\Typo3Whoops\Error;
 
 /*
@@ -12,6 +13,7 @@ namespace Portrino\Typo3Whoops\Error;
  * LICENSE file that was distributed with this source code.
  */
 
+use Throwable;
 use TYPO3\CMS\Core\Error\AbstractExceptionHandler;
 use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
@@ -46,20 +48,18 @@ class WhoopsExceptionHandler extends AbstractExceptionHandler
     /**
      * Formats and echoes the exception as XHTML.
      *
-     * @param \Exception|\Throwable $exception The exception(PHP 5.x) or throwable(PHP >= 7.0) object.
-     * @return void
+     * @param Throwable $exception The throwable object.
      */
-    public function echoExceptionWeb($exception)
+    public function echoExceptionWeb(Throwable $exception)
     {
     }
 
     /**
      * Formats and echoes the exception for the command line
      *
-     * @param \Exception|\Throwable $exception The exception(PHP 5.x) or throwable(PHP >= 7.0) object.
-     * @return void
+     * @param Throwable $exception The throwable object.
      */
-    public function echoExceptionCLI($exception)
+    public function echoExceptionCLI(Throwable $exception)
     {
     }
 }

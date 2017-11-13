@@ -3,3 +3,5 @@
 /composer.lock
 /.envrc
 /.php_cs.cache
+/tests/_output
+nohup.out
