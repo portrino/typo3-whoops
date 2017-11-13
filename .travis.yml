@@ -28,7 +28,7 @@ cache:
     - $HOME/.composer/cache
 
 before_install:
-  - mysql -e 'CREATE DATABASE typo3;'
+  - mysql -e 'CREATE DATABASE typo3 CHARACTER SET utf8 COLLATE utf8_general_ci;'
   - composer self-update
 
 install:
