@@ -43,6 +43,19 @@ if (strpos($applicationContext, 'Development') !== false) {
 }
 ```
 
+##### Compatibility for PHP versions < 7
+
+Because the ``ExceptionHandlerInterface`` under php5.5 and 5.6 differs from the one from php > 7 
+we provide you a compatible version of the ``WhoopsExceptionHandler``.
+
+```php
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['debugExceptionHandler'] = 
+    \Portrino\Typo3Whoops\Compatibility\Error\WhoopsExceptionHandler::class;
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['productionExceptionHandler'] = 
+    \Portrino\Typo3Whoops\Compatibility\Error\WhoopsExceptionHandler::class;
+``` 
+
+
 #### via TYPO3 Console
 
 ```bash
