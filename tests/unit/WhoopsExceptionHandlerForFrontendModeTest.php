@@ -38,7 +38,12 @@ class WhoopsExceptionHandlerForFrontendModeTest extends \Codeception\Test\Unit
 
         GeneralUtility::setSingletonInstance(EnvironmentService::class, $environementServiceMock);
 
-        $this->whoopsExceptionHandler = new WhoopsExceptionHandler();
+        if (defined('PHP_MAJOR_VERSION') && PHP_MAJOR_VERSION >= 7) {
+            $exceptionHandlerClass = WhoopsExceptionHandler::class;
+        } else {
+            $exceptionHandlerClass = \Portrino\Typo3Whoops\Compatibility\Error\WhoopsExceptionHandler::class;
+        }
+        $this->whoopsExceptionHandler = new $exceptionHandlerClass;
     }
 
     protected function _after()

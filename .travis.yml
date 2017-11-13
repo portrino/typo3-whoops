@@ -4,17 +4,17 @@ matrix:
   fast_finish: true
   include:
     - php: 5.5
-      env: TYPO3_VERSION=^7.6 PHPSTAN=0
+      env: TYPO3_VERSION=^7.6 PHPSTAN=0 COMPAT=1
     - php: 5.6
-      env: TYPO3_VERSION=^7.6 PHPSTAN=0
+      env: TYPO3_VERSION=^7.6 PHPSTAN=0 COMPAT=1
     - php: 7.0
-      env: TYPO3_VERSION=^7.6 PHPSTAN=1
+      env: TYPO3_VERSION=^7.6 PHPSTAN=1 COMPAT=0
     - php: 7.1
-      env: TYPO3_VERSION=^7.6 PHPSTAN=1
+      env: TYPO3_VERSION=^7.6 PHPSTAN=1 COMPAT=0
     - php: 7.0
-      env: TYPO3_VERSION=^8.7 PHPSTAN=1
+      env: TYPO3_VERSION=^8.7 PHPSTAN=1 COMPAT=0
     - php: 7.1
-      env: TYPO3_VERSION=^8.7 PHPSTAN=1
+      env: TYPO3_VERSION=^8.7 PHPSTAN=1 COMPAT=0
 
 sudo: false
 
@@ -42,8 +42,11 @@ before_script:
   - .build/bin/typo3cms database:updateschema *.add,*.change
   - .build/bin/typo3cms cache:flushgroups system
   - .build/bin/typo3cms configuration:set --path SYS/trustedHostsPattern --value ".*"
-  - .build/bin/typo3cms configuration:set --path SYS/debugExceptionHandler --value "Portrino\\Typo3Whoops\\Error\\WhoopsExceptionHandler"
-  - .build/bin/typo3cms configuration:set --path SYS/productionExceptionHandler --value "Portrino\\Typo3Whoops\\Error\\WhoopsExceptionHandler"
+  - if [[ $COMPAT = 0 ]]; then .build/bin/typo3cms configuration:set --path SYS/debugExceptionHandler --value "Portrino\\Typo3Whoops\\Error\\WhoopsExceptionHandler"; fi
+  - if [[ $COMPAT = 0 ]]; then .build/bin/typo3cms configuration:set --path SYS/productionExceptionHandler --value "Portrino\\Typo3Whoops\\Error\\WhoopsExceptionHandler"; fi
+  - if [[ $COMPAT = 1 ]]; then .build/bin/typo3cms configuration:set --path SYS/debugExceptionHandler --value "Portrino\\Typo3Whoops\\Compatibility\\Error\\WhoopsExceptionHandler"; fi
+  - if [[ $COMPAT = 1 ]]; then .build/bin/typo3cms configuration:set --path SYS/productionExceptionHandler --value "Portrino\\Typo3Whoops\\Compatibility\\Error\\WhoopsExceptionHandler"; fi
+
 
   - echo "Run php in-built server - background process"
   - nohup bash -c "php -S localhost:8000 2>&1 -t .build/web/ &" && sleep 1; cat nohup.out
