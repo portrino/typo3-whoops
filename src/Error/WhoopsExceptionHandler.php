@@ -14,7 +14,6 @@ namespace Portrino\Typo3Whoops\Error;
  */
 
 use Throwable;
-use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Error\AbstractExceptionHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
