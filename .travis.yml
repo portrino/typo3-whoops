@@ -33,10 +33,8 @@ before_install:
 
 install:
   - composer update typo3/cms=$TYPO3_VERSION
-  - composer install
 
 before_script:
-  - composer require typo3/cms=$TYPO3_VERSION
   - export TYPO3_PATH_WEB=$PWD/.build/web
   - mkdir -p .build/web/typo3conf
   - .build/bin/typo3cms install:setup --non-interactive --database-host-name=127.0.0.1 --database-port=3306 --database-user-name=travis --database-name=typo3 --use-existing-database --admin-user-name=travis --admin-password=travis123456! --site-setup-type=site
