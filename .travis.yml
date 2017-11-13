@@ -32,6 +32,7 @@ before_install:
   - composer self-update
 
 install:
+  - composer update typo3/cms=$TYPO3_VERSION
   - composer install
 
 before_script:
