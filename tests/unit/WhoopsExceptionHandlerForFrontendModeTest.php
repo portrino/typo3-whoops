@@ -24,19 +24,10 @@ class WhoopsExceptionHandlerForFrontendModeTest extends \Codeception\Test\Unit
 
     protected function _before()
     {
-        $environementServiceMock = $this->getMockBuilder(EnvironmentService::class)
-            ->setMethods(
-                [
-                    'isEnvironmentInCliMode'
-                ]
-            )->getMock();
+        $environmentService = $this->prophesize(EnvironmentService::class);
+        $environmentService->isEnvironmentInCliMode()->willReturn(false);
 
-        $environementServiceMock
-            ->expects(static::any())
-            ->method('isEnvironmentInCliMode')
-            ->willReturn(false);
-
-        GeneralUtility::setSingletonInstance(EnvironmentService::class, $environementServiceMock);
+        GeneralUtility::setSingletonInstance(EnvironmentService::class, $environmentService->reveal());
 
         if (defined('PHP_MAJOR_VERSION') && PHP_MAJOR_VERSION >= 7) {
             $exceptionHandlerClass = WhoopsExceptionHandler::class;
@@ -51,7 +42,7 @@ class WhoopsExceptionHandlerForFrontendModeTest extends \Codeception\Test\Unit
     }
 
     // tests
-    public function testIfWhoopsPlainTextHandlerIsRegisteredWhenInDefaultMode()
+    public function testIfWhoopsPrettyTextHandlerIsRegisteredWhenInDefaultMode()
     {
         $whoops = $this->whoopsExceptionHandler->getWhoops();
         /** @var Callable|HandlerInterface $actualHandler */

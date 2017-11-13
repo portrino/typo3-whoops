@@ -2,6 +2,7 @@
 
 
 use Portrino\Typo3Whoops\Error\WhoopsExceptionHandler;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use Whoops\Handler\HandlerInterface;
@@ -24,19 +25,10 @@ class WhoopsExceptionHandlerForCliModeTest extends \Codeception\Test\Unit
 
     protected function _before()
     {
-        $environementServiceMock = $this->getMockBuilder(EnvironmentService::class)
-            ->setMethods(
-                [
-                    'isEnvironmentInCliMode'
-                ]
-            )->getMock();
+        $environmentService = $this->prophesize(EnvironmentService::class);
+        $environmentService->isEnvironmentInCliMode()->willReturn(true);
 
-        $environementServiceMock
-            ->expects(static::any())
-            ->method('isEnvironmentInCliMode')
-            ->willReturn(true);
-
-        GeneralUtility::setSingletonInstance(EnvironmentService::class, $environementServiceMock);
+        GeneralUtility::setSingletonInstance(EnvironmentService::class, $environmentService->reveal());
 
         if (defined('PHP_MAJOR_VERSION') && PHP_MAJOR_VERSION >= 7) {
             $exceptionHandlerClass = WhoopsExceptionHandler::class;
