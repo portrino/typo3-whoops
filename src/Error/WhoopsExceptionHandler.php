@@ -14,7 +14,10 @@ namespace Portrino\Typo3Whoops\Error;
  */
 
 use Throwable;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Error\AbstractExceptionHandler;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
@@ -26,23 +29,50 @@ use Whoops\Run;
  */
 class WhoopsExceptionHandler extends AbstractExceptionHandler
 {
+    /**
+     * @var Run
+     */
+    protected $whoops;
 
     /**
-     * Constructs this exception handler - registers itself as the default exception handler.
+     * @var EnvironmentService
+     */
+    protected $environmentService;
+
+    /**
+     * WhoopsExceptionHandler constructor.
      */
     public function __construct()
     {
-        $whoops = new Run;
+        $this->environmentService = $this->createEnvironmentService();
 
-        switch (PHP_SAPI) {
-            case 'cli':
-                $whoops->pushHandler(new PlainTextHandler());
-                break;
-            default:
-                $whoops->pushHandler(new PrettyPageHandler());
+        $this->whoops = new Run();
+
+        if ($this->environmentService->isEnvironmentInCliMode()) {
+            $this->whoops->pushHandler(new PlainTextHandler());
+        } else {
+            $this->whoops->pushHandler(new PrettyPageHandler());
         }
 
-        $whoops->register();
+        $this->whoops->register();
+    }
+
+    /**
+     * @return EnvironmentService
+     */
+    public function createEnvironmentService()
+    {
+        /** @var EnvironmentService $result */
+        $result = GeneralUtility::makeInstance(EnvironmentService::class);
+        return $result;
+    }
+
+    /**
+     * @return Run
+     */
+    public function getWhoops()
+    {
+        return $this->whoops;
     }
 
     /**
