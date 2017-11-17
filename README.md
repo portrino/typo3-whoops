@@ -68,3 +68,13 @@ typo3cms configuration:set --path SYS/productionExceptionHandler --value "Portri
 Now trigger an exception somewhere in your extension code and you should see php errors for cool kids.
 
 ![Whoops!](http://i.imgur.com/0VQpe96.png)
+
+## Authors
+
+![](https://avatars0.githubusercontent.com/u/540478?s=40&v=4)
+![](https://avatars0.githubusercontent.com/u/726519?s=40&v=4)
+
+* **Axel Böswetter** - *Initial work* - [EvilBMP](https://github.com/EvilBMP)
+* **André Wuttig** - *Bugfixes, Unit Tests, Acceptance Tests, Travis CI Integration* - [aWuttig](https://github.com/aWuttig)
+
+See also the list of [contributors](https://github.com/portrino/typo3-whoops/graphs/contributors) who participated in this project.
